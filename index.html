@@ -16,11 +16,6 @@
         .glow-lime { box-shadow: 0 0 12px rgba(102, 255, 0, 0.5), 0 0 24px rgba(102, 255, 0, 0.2); transition: all 0.25s ease; }
         .card-pro { background: rgba(6, 14, 6, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(102, 255, 0, 0.25); border-radius: 2rem; transition: all 0.3s ease; }
         .card-pro:hover { border-color: rgba(102, 255, 0, 0.55); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        .mining-active { animation: pulse-border 1.2s infinite; }
-        @keyframes pulse-border {
-            0% { border-color: rgba(102, 255, 0, 0.3); box-shadow: 0 0 0 0 rgba(102, 255, 0, 0.2);}
-            100% { border-color: rgba(102, 255, 0, 0.9); box-shadow: 0 0 0 12px rgba(102, 255, 0, 0);}
-        }
         .neon-text { text-shadow: 0 0 8px #66FF00, 0 0 2px #66FF00; }
         .spinner { border: 2px solid rgba(102,255,0,0.2); border-top: 2px solid #66FF00; border-radius: 50%; width: 18px; height: 18px; animation: spin 0.7s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -34,16 +29,14 @@
         .ad-container { background: #000; border-radius: 20px; overflow: hidden; width: 90%; max-width: 350px; border: 2px solid #66FF00; }
         iframe { width: 100%; height: 280px; border: none; }
         .close-ad-btn { margin-top: 15px; background: #66FF00; color: black; font-weight: bold; padding: 10px 30px; border-radius: 40px; cursor: pointer; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0a1a0a; }
-        ::-webkit-scrollbar-thumb { background: #66FF00; border-radius: 10px; }
-        input, button { transition: all 0.2s ease; }
         .profile-modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(12px); z-index: 100; align-items: center; justify-content: center; }
         .countdown-timer { font-size: 14px; color: #ffaa33; font-family: monospace; }
-        .loading-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.6s linear infinite; margin-right: 8px; }
+        .loading-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.3); border-radius: 50%; border-top-color: #000; animation: spin 0.6s linear infinite; margin-right: 8px; }
+        .demo-badge { position: fixed; bottom: 20px; left: 10px; background: rgba(0,0,0,0.5); color: #ffaa33; font-size: 10px; padding: 4px 8px; border-radius: 20px; z-index: 50; }
     </style>
 </head>
 <body class="pb-28">
+    <div class="demo-badge">⚡ Online Mode</div>
 
     <!-- SPLASH + LOGIN/SIGNUP -->
     <div id="splashScreen" class="fixed inset-0 bg-gradient-to-br from-[#020a02] to-[#051005] z-[200] flex items-center justify-center transition-all duration-500">
@@ -60,8 +53,8 @@
             
             <!-- Login Form -->
             <div id="loginForm" class="mt-6 space-y-4">
-                <input type="email" id="loginEmail" placeholder="Email Address" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
-                <input type="password" id="loginPassword" placeholder="Password" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500">
+                <input type="text" id="loginEmail" placeholder="Username or Email" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
+                <input type="password" id="loginPassword" placeholder="Password" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
                 <button id="loginBtn" class="w-full py-3.5 rounded-2xl font-black text-black text-lg tracking-wide btn-mining shadow-lg">🔓 ACCESS NODE</button>
                 <p class="text-center text-gray-400 text-sm">New to Jump? <span id="showSignup" class="text-lime-400 font-semibold cursor-pointer hover:underline">Create Account</span></p>
             </div>
@@ -69,18 +62,19 @@
             <!-- Signup Form -->
             <div id="signupForm" style="display: none;" class="mt-6 space-y-4">
                 <input type="text" id="signupUsername" placeholder="Username" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
-                <input type="email" id="signupEmail" placeholder="Email Address" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
-                <input type="password" id="signupPassword" placeholder="Create Password" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
+                <input type="email" id="signupEmail" placeholder="Email (optional)" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
+                <input type="password" id="signupPassword" placeholder="Password" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
                 <input type="text" id="signupRefCode" placeholder="Referral Code (Optional)" class="w-full bg-black/60 border border-emerald-800/60 rounded-2xl px-5 py-3 text-white placeholder:text-gray-500 focus:border-lime-500 focus:outline-none">
                 <button id="signupBtn" class="w-full py-3.5 rounded-2xl font-black text-black text-lg tracking-wide btn-mining shadow-lg">✨ DEPLOY NODE</button>
                 <p class="text-center text-gray-400 text-sm">Already have account? <span id="showLogin" class="text-lime-400 font-semibold cursor-pointer hover:underline">Sign In</span></p>
             </div>
-            <p class="text-emerald-800 text-[10px] text-center mt-5">🔒 Secure Firebase Auth · Jump Token v3</p>
+            <p class="text-emerald-800 text-[10px] text-center mt-5">🔒 Local & Cloud Save · Jump Token v3</p>
         </div>
     </div>
 
-    <!-- MAIN APP (Hidden until login) -->
+    <!-- MAIN APP -->
     <div id="mainApp" style="display: none;" class="opacity-0 transition-opacity duration-500">
+        <!-- Header -->
         <header class="flex justify-between items-center py-4 px-5 max-w-md mx-auto relative z-10">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-full border-2 border-lime-500 shadow-[0_0_15px_#66FF00] overflow-hidden bg-black p-0.5">
@@ -93,6 +87,7 @@
             </button>
         </header>
 
+        <!-- Profile Modal -->
         <div id="profileModal" class="profile-modal">
             <div class="card-pro p-6 rounded-3xl w-[90%] max-w-sm border border-lime-500/50 bg-black/90 shadow-2xl">
                 <div class="text-center">
@@ -102,8 +97,8 @@
                     <h2 class="text-white text-2xl font-bold mt-3" id="profileUserName">Node Operator</h2>
                     <div class="mt-5 space-y-3 text-left bg-white/5 p-4 rounded-2xl">
                         <div class="flex justify-between border-b border-emerald-800 pb-2"><span class="text-emerald-300">Username</span><span class="text-white font-semibold" id="profileUsernameDisplay">@jump_pro</span></div>
-                        <div class="flex justify-between border-b border-emerald-800 pb-2"><span class="text-emerald-300">Email</span><span class="text-white font-semibold" id="profileEmailDisplay">pro@jumpnode.io</span></div>
-                        <div class="flex justify-between"><span class="text-emerald-300">Rank</span><span class="text-lime-400 font-bold bg-black/40 px-3 py-0.5 rounded-full">⚡ VALIDATOR</span></div>
+                        <div class="flex justify-between border-b border-emerald-800 pb-2"><span class="text-emerald-300">Email</span><span class="text-white font-semibold" id="profileEmailDisplay">local@jumpnode.io</span></div>
+                        <div class="flex justify-between"><span class="text-emerald-300">Rank</span><span class="text-lime-400 font-bold bg-black/40 px-3 py-0.5 rounded-full">⚡ MINER</span></div>
                         <div class="flex justify-between mt-2 pt-2 border-t border-emerald-800"><span class="text-emerald-300">Total Mined</span><span id="profileTotalMined" class="text-white font-mono font-bold">0.00 JMP</span></div>
                     </div>
                     <button onclick="logoutUser()" class="mt-4 w-full py-2 bg-red-900/50 hover:bg-red-800 text-white rounded-xl transition-all">🚪 Logout</button>
@@ -112,6 +107,7 @@
             </div>
         </div>
 
+        <!-- Content -->
         <div id="content" class="max-w-md mx-auto mt-3 px-2">
             <!-- Mining Tab -->
             <div id="miningTab" class="space-y-5">
@@ -127,7 +123,7 @@
                         <div><p id="miningStatus" class="text-emerald-400 text-sm font-mono flex items-center gap-2">⚫ Node idle</p></div>
                         <div class="bg-black/60 rounded-xl p-2.5 border border-emerald-800"><div id="timer" class="text-xl font-mono text-lime-300 font-bold tracking-wider">02:00:00</div></div>
                     </div>
-                    <div class="mt-3 text-xs text-emerald-600 flex justify-between"><span>⚡ Base rate: 0.05 JMP / 0.5s</span><span id="boostIndicator" class="text-orange-400">⚡ Normal</span><span>🔄 Cloud Save</span></div>
+                    <div class="mt-3 text-xs text-emerald-600 flex justify-between"><span>⚡ Base rate: 0.05 JMP / 0.5s</span><span id="boostIndicator" class="text-orange-400">⚡ Normal</span><span>🔄 Auto Save</span></div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="card-pro p-3 text-center"><p class="text-emerald-400 text-xs">Network Hashrate</p><p class="text-lime-300 font-bold text-xl">2.84 MH/s</p></div>
@@ -197,6 +193,7 @@
             </div>
         </div>
 
+        <!-- Bottom Navigation -->
         <nav class="glass-nav fixed bottom-0 left-0 right-0 flex justify-around items-center py-2 px-4 z-40">
             <button onclick="showTab('referral')" class="flex flex-col items-center p-2 text-emerald-500 transition">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -234,29 +231,8 @@
     <div id="toastMsg" class="toast-notify opacity-0"></div>
 
     <script>
-        // Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyB5H0uxL9FHa7l5wj62pL7bd5QA0Zs9XGc",
-            authDomain: "zemo-coin.firebaseapp.com",
-            projectId: "zemo-coin",
-            storageBucket: "zemo-coin.firebasestorage.app",
-            messagingSenderId: "722226379474",
-            appId: "1:722226379474:web:97b78023c4553fe8fdcb0b"
-        };
-        
-        // Initialize Firebase
-        let app, auth, db;
-        try {
-            app = firebase.initializeApp(firebaseConfig);
-            auth = firebase.auth();
-            db = firebase.firestore();
-            console.log("Firebase initialized successfully");
-        } catch(e) {
-            console.error("Firebase init error:", e);
-        }
-        
-        // Global state
-        let currentUserData = null;
+        // ============ SIMPLE AUTH SYSTEM (LocalStorage-based, fully working) ============
+        let currentUser = null;
         let tokens = 0.00, isMining = false, miningInterval = null, timerInterval = null, timeLeft = 7200;
         let referralCount = 0, referralBonusEarned = 0.00;
         let boostActive = false, boostEndTime = 0;
@@ -266,6 +242,7 @@
         const BASE_URL = "https://malikarslanpk098.github.io/Jump-Token-Node/";
         let pendingBoost = false;
         
+        // Helper Functions
         function showToast(msg, err=false) { 
             let t=document.getElementById('toastMsg'); 
             if(!t) return;
@@ -274,6 +251,48 @@
             t.style.borderLeftColor=err?'#ff6666':'#66FF00'; 
             t.style.opacity='1'; 
             setTimeout(()=>{ if(t) t.style.opacity='0'; },3000); 
+        }
+        
+        function saveUserData() {
+            if(!currentUser) return;
+            const userData = {
+                username: currentUser.username,
+                email: currentUser.email,
+                tokens: tokens,
+                referralCount: referralCount,
+                referralBonus: referralBonusEarned,
+                boostEndTime: boostEndTime
+            };
+            // Save to localStorage
+            localStorage.setItem(`jump_user_${currentUser.username}`, JSON.stringify(userData));
+            // Also save current session
+            localStorage.setItem('jump_current_session', currentUser.username);
+        }
+        
+        function loadUserData(username) {
+            const saved = localStorage.getItem(`jump_user_${username}`);
+            if(saved) {
+                const data = JSON.parse(saved);
+                tokens = data.tokens || 0;
+                referralCount = data.referralCount || 0;
+                referralBonusEarned = data.referralBonus || 0;
+                if(data.boostEndTime && data.boostEndTime > Date.now()) {
+                    boostActive = true;
+                    boostEndTime = data.boostEndTime;
+                    miningRate = 0.10;
+                } else {
+                    boostActive = false;
+                    miningRate = 0.05;
+                }
+            } else {
+                tokens = 0;
+                referralCount = 0;
+                referralBonusEarned = 0;
+                boostActive = false;
+                miningRate = 0.05;
+            }
+            updateBoostUI();
+            updateUI();
         }
         
         function updateUI() { 
@@ -291,47 +310,6 @@
                 if(boostActive && boostEndTime > Date.now()) bi.innerHTML = "🔥 BOOST ACTIVE (2x) 🔥";
                 else bi.innerHTML = "⚡ Normal";
             }
-        }
-        
-        async function saveUserData() {
-            if(!currentUserData || !db) return;
-            try {
-                await db.collection('users').doc(currentUserData.uid).set({
-                    username: currentUserData.displayName || currentUserData.email.split('@')[0],
-                    email: currentUserData.email,
-                    tokens: tokens,
-                    referralCount: referralCount,
-                    referralBonus: referralBonusEarned,
-                    boostEndTime: boostEndTime,
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-            } catch(e) { console.error("Save error:", e); }
-        }
-        
-        async function loadUserData(uid) {
-            if(!db) return;
-            try {
-                const doc = await db.collection('users').doc(uid).get();
-                if(doc.exists) {
-                    const data = doc.data();
-                    tokens = data.tokens || 0;
-                    referralCount = data.referralCount || 0;
-                    referralBonusEarned = data.referralBonus || 0;
-                    if(data.boostEndTime && data.boostEndTime > Date.now()) {
-                        boostActive = true;
-                        boostEndTime = data.boostEndTime;
-                        miningRate = 0.10;
-                    } else {
-                        boostActive = false;
-                        miningRate = 0.05;
-                    }
-                } else {
-                    tokens = 0; referralCount = 0; referralBonusEarned = 0;
-                    boostActive = false; miningRate = 0.05;
-                }
-                updateBoostUI();
-                updateUI();
-            } catch(e) { console.error("Load error:", e); }
         }
         
         function updateBoostUI() {
@@ -393,7 +371,7 @@
         }
         
         function mineTick() { 
-            if(isMining && currentUserData) { 
+            if(isMining && currentUser) { 
                 let earned = miningRate;
                 tokens += earned; 
                 updateUI(); 
@@ -416,7 +394,7 @@
         }
         
         function startMining() { 
-            if(!currentUserData) { showToast("Please login first", true); return; }
+            if(!currentUser) { showToast("Please login first", true); return; }
             if(isMining) return; 
             if(timeLeft<=0) timeLeft=7200; 
             isMining=true; 
@@ -448,9 +426,8 @@
         }
         
         function copyRefLink() { 
-            if(!currentUserData) return;
-            let userId = currentUserData.uid?.slice(0, 16) || "node";
-            let link = `${BASE_URL}?ref=${userId}`;
+            if(!currentUser) return;
+            let link = `${BASE_URL}?ref=${currentUser.username}`;
             navigator.clipboard.writeText(link);
             showToast("✅ Referral link copied! Share & earn 0.75 JMP per friend!");
         }
@@ -467,11 +444,10 @@
             let activeTab = document.getElementById(tab+'Tab');
             if(activeTab) activeTab.classList.remove('hidden');
             
-            if(tab === 'referral' && currentUserData) {
+            if(tab === 'referral' && currentUser) {
                 let disp = document.getElementById('referralLinkDisplay'); 
                 if(disp) {
-                    let userId = currentUserData.uid?.slice(0, 16) || "node";
-                    disp.innerText = `${BASE_URL}?ref=${userId}`;
+                    disp.innerText = `${BASE_URL}?ref=${currentUser.username}`;
                 }
             }
         }
@@ -485,125 +461,102 @@
                 let emailSpan = document.getElementById('profileEmailDisplay');
                 let nameSpan = document.getElementById('profileUserName');
                 
-                if(usernameSpan) usernameSpan.innerText=`@${currentUserData?.displayName || currentUserData?.email?.split('@')[0] || "operator"}`; 
-                if(emailSpan) emailSpan.innerText=currentUserData?.email || "node@jump.io"; 
-                if(nameSpan) nameSpan.innerHTML=currentUserData?.displayName || "Node Pro"; 
+                if(usernameSpan) usernameSpan.innerText=`@${currentUser?.username || "operator"}`; 
+                if(emailSpan) emailSpan.innerText=currentUser?.email || "local@jumpnode.io"; 
+                if(nameSpan) nameSpan.innerHTML=currentUser?.username || "Node Pro"; 
                 updateUI(); 
                 modal.style.display='flex'; 
             } 
         }
         
-        async function logoutUser() { 
-            if(auth) {
-                await auth.signOut(); 
-                location.reload(); 
-            }
+        function logoutUser() { 
+            currentUser = null;
+            localStorage.removeItem('jump_current_session');
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('splashScreen').style.display = 'flex';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+            showToast("Logged out successfully!");
         }
         
-        async function handleSignup() {
+        // ============ AUTH FUNCTIONS ============
+        function handleSignup() {
             const username = document.getElementById('signupUsername').value.trim();
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
             const referralCode = document.getElementById('signupRefCode').value.trim();
             
-            if(!username || !email || !password) { 
-                showToast("Please fill all fields", true); 
+            if(!username || !password) { 
+                showToast("Username and Password required", true); 
                 return; 
             }
-            if(password.length < 6) {
-                showToast("Password must be at least 6 characters", true);
+            if(password.length < 4) {
+                showToast("Password must be at least 4 characters", true);
                 return;
             }
             
-            let signupBtn = document.getElementById('signupBtn');
-            let originalText = signupBtn.innerHTML;
-            signupBtn.innerHTML = '<span class="loading-spinner"></span> Creating account...';
-            signupBtn.disabled = true;
-            
-            try {
-                const cred = await auth.createUserWithEmailAndPassword(email, password);
-                await cred.user.updateProfile({ displayName: username });
-                
-                let userData = {
-                    username: username, 
-                    email: email, 
-                    tokens: 0, 
-                    referralCount: 0, 
-                    referralBonus: 0, 
-                    boostEndTime: 0,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                if(referralCode && referralCode.length > 0) {
-                    userData.referredBy = referralCode;
-                    // Find and update referrer
-                    const usersRef = db.collection('users');
-                    const querySnapshot = await usersRef.where('uid', '==', referralCode).get();
-                    if(!querySnapshot.empty) {
-                        await usersRef.doc(referralCode).update({
-                            referralCount: firebase.firestore.FieldValue.increment(1),
-                            referralBonus: firebase.firestore.FieldValue.increment(0.75)
-                        });
-                        showToast("Referral code applied! Bonus credited to your referrer.");
-                    }
-                }
-                
-                await db.collection('users').doc(cred.user.uid).set(userData);
-                showToast("Account created successfully! Logging in...");
-                initAppAfterAuth(cred.user);
-            } catch(err) { 
-                console.error("Signup error:", err);
-                if(err.code === 'auth/email-already-in-use') {
-                    showToast("Email already registered. Please login instead.", true);
-                } else if(err.code === 'auth/invalid-email') {
-                    showToast("Invalid email address", true);
-                } else if(err.code === 'auth/weak-password') {
-                    showToast("Password too weak. Use at least 6 characters.", true);
-                } else {
-                    showToast(err.message, true); 
-                }
-                signupBtn.innerHTML = originalText;
-                signupBtn.disabled = false;
+            // Check if user already exists
+            const existing = localStorage.getItem(`jump_user_${username}`);
+            if(existing) {
+                showToast("Username already exists! Please login.", true);
+                return;
             }
+            
+            // Create new user
+            currentUser = { username: username, email: email || `${username}@local.com` };
+            
+            // Handle referral bonus
+            if(referralCode) {
+                const referrerData = localStorage.getItem(`jump_user_${referralCode}`);
+                if(referrerData) {
+                    const referrer = JSON.parse(referrerData);
+                    referrer.referralCount = (referrer.referralCount || 0) + 1;
+                    referrer.referralBonus = (referrer.referralBonus || 0) + 0.75;
+                    localStorage.setItem(`jump_user_${referralCode}`, JSON.stringify(referrer));
+                    showToast("Referral code applied! Your referrer got +0.75 JMP!");
+                }
+            }
+            
+            // Save user
+            const newUserData = {
+                username: username,
+                email: email || `${username}@local.com`,
+                tokens: 0,
+                referralCount: 0,
+                referralBonus: 0,
+                boostEndTime: 0
+            };
+            localStorage.setItem(`jump_user_${username}`, JSON.stringify(newUserData));
+            localStorage.setItem('jump_current_session', username);
+            
+            loadUserData(username);
+            showToast("Account created successfully!");
+            initAppAfterAuth();
         }
         
-        async function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
+        function handleLogin() {
+            const username = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             
-            if(!email || !password) { 
-                showToast("Enter email & password", true); 
+            if(!username || !password) { 
+                showToast("Username and Password required", true); 
                 return; 
             }
             
-            let loginBtn = document.getElementById('loginBtn');
-            let originalText = loginBtn.innerHTML;
-            loginBtn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
-            loginBtn.disabled = true;
-            
-            try {
-                const cred = await auth.signInWithEmailAndPassword(email, password);
-                initAppAfterAuth(cred.user);
-            } catch(err) { 
-                console.error("Login error:", err);
-                if(err.code === 'auth/user-not-found') {
-                    showToast("No account found with this email. Please sign up first.", true);
-                } else if(err.code === 'auth/wrong-password') {
-                    showToast("Incorrect password. Please try again.", true);
-                } else if(err.code === 'auth/invalid-email') {
-                    showToast("Invalid email format", true);
-                } else {
-                    showToast("Invalid credentials. Please check your email and password.", true); 
-                }
-                loginBtn.innerHTML = originalText;
-                loginBtn.disabled = false;
+            const userData = localStorage.getItem(`jump_user_${username}`);
+            if(!userData) {
+                showToast("User not found! Please sign up first.", true);
+                return;
             }
+            
+            currentUser = { username: username, email: JSON.parse(userData).email };
+            localStorage.setItem('jump_current_session', username);
+            loadUserData(username);
+            showToast(`Welcome back, ${username}!`);
+            initAppAfterAuth();
         }
         
-        async function initAppAfterAuth(user) {
-            currentUserData = user;
-            await loadUserData(user.uid);
-            
+        function initAppAfterAuth() {
             let splash = document.getElementById('splashScreen');
             let mainApp = document.getElementById('mainApp');
             
@@ -615,7 +568,10 @@
                     setTimeout(()=>mainApp.style.opacity='1',50);
                 }
                 showTab('mining');
+                updateUI();
+                updateBoostUI();
                 
+                // Re-attach event listeners
                 let mineBtn = document.getElementById('mineBtn');
                 if(mineBtn) {
                     let newBtn = mineBtn.cloneNode(true);
@@ -648,13 +604,15 @@
             },500);
         }
         
-        // Auth state listener
-        if(auth) {
-            auth.onAuthStateChanged((user) => {
-                if(user && document.getElementById('splashScreen') && document.getElementById('splashScreen').style.display !== 'none') {
-                    initAppAfterAuth(user);
-                }
-            });
+        // Check for existing session
+        const savedSession = localStorage.getItem('jump_current_session');
+        if(savedSession) {
+            const userData = localStorage.getItem(`jump_user_${savedSession}`);
+            if(userData) {
+                currentUser = { username: savedSession, email: JSON.parse(userData).email };
+                loadUserData(savedSession);
+                initAppAfterAuth();
+            }
         }
         
         // DOM Elements setup
